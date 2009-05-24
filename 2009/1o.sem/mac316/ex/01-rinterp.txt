@@ -1,0 +1,147 @@
+You must do this assignment solo. We know that some of you are not yet
+comfortable with Scheme; for that reason, we will weight this assignment very,
+very low in the overall score. Doing poorly on it will not at all damage your
+course grade. But, you should exploit this opportunity to become familiar with
+the style of programming you will do in the rest of the semester.  
+
+
+Rudimentary Interpreter
+=======================
+
+   1. Write a parser and interpreter for the WAE language we discussed in
+class. The textbook can be of great assistance in this part of the assignment;
+it provides an abstract syntax datatype and the beginnings of a parser and an
+interpreter.  
+
+  2. Once you've written and tested the parser and interpreter for WAE, extend
+it with the features described below.
+
+In each part of the assignment, implement the function parse, which consumes
+an expression in the language's concrete syntax and returns the abstract
+syntax representation of that expression. parse must accept only expressions
+in the syntax of the language.
+
+In addition to parse, you must implement the function interp, which consumes
+an abstract syntax expression (as returned by the parse function) and returns
+a Scheme number.
+
+You must include a contract for every function that you write and include test
+cases that amply exercise all of the code you've written. We will not give any
+credit to untested functionality, even if it is correct! (Note that DrScheme
+will tell you if any of your code is untested.) Refer to the syllabus for
+style requirements.
+
+
+Features to Implement
+=====================
+
+WAE
+
+    The WAE language has numbers, two arithmetic operators (+, -), identifiers
+and with expressions. Of course, to handle identifiers and with expressions
+you'll have to implement substitution.
+
+
+Binary arithmetic operators
+
+    In place of having separate rules for + and -, define a single syntactic
+rule for all binary arithmetic operators. Parse these into a binop datatype
+variant. Define a table that maps operator names (symbols) to actual functions
+(Scheme procedures) that perform the corresponding operation. Having a single
+rule like this, accompanied by a table, makes your language easier to extend:
+once you have modified your parser and interpreter once to support binary
+operators, you won't need to touch either one to add any number of new ones.
+To demonstrate this, define multiplication and division (using * and / to
+represent them in the language's concrete syntax).
+
+
+Multi-armed with
+
+    Each identifier bound by the with expression is bound only in its body.
+There will be zero or more identifiers bound by each with expression. If there
+are multiple bindings of the same identifier in a single with expression's
+bindings list, your interpreter should halt with an error message. An example:
+
+    {with {{x 2}
+           {y 3}}
+      {with {{z {+ x y}}}
+        {+ x z}}}
+
+    will evaluate to 7, while
+
+    {with {{x 2}
+           {x 3}}
+      {+ x 2}}
+
+    will halt with an error message.
+
+
+Syntax
+======
+
+The syntax of the language you should implement can be captured with the following grammar:
+
+<WAE> ::= <num>
+    | {+ <WAE> <WAE>}
+    | {- <WAE> <WAE>}
+    | {* <WAE> <WAE>}
+    | {/ <WAE> <WAE>}
+    | {with {{<id> <WAE>} ...} <WAE>}
+    | <id>
+where an <id> is not +, -, *, /, or with.
+
+In this grammar, the ellipsis (...) means that the previous non-terminal is present zero or more times.
+
+If a with expression has duplicate identifiers, we consider it a syntax error. Therefore, such errors must be detected in parse. For example, parsing the following expression must signal an error:
+
+{with {{x 10} {x 20}} 50}
+
+
+Scheme's (match ...) Syntax
+===========================
+
+If you're pretty comfortable with Scheme, or are feeling particularly adventurous, check out the (match ...) syntax in the PLT Scheme Docs. It could make your parser prettier and easier to write.
+
+Note that this a power user feature and is not required. If you find yourself getting frustrated using the cond/case syntax to parse the input, take a look. If you're still shaky on Scheme in general, skip it for now.
+
+
+Testing Your Code
+=================
+
+Your parser and interpreter must detect errors and explicitly signal them by calling (error ...). We will consider an error raised internally by Scheme to be a bug in your code.
+
+For example, Scheme signals a "divide by zero" error if you attempt to evaluate (/ 1 0). Since we use Scheme's division function to implement division in this assignment, you may be tempted to leave it to Scheme to signal division by zero errors for you. However, you must signal the error yourself by explicitly testing for division by zero before calling Scheme's division procedure.
+
+If you are not sure if an error raised by your program constitutes a bug, search the DrScheme Help for test/exn. test/exn tests for errors, but only succeeds on errors that you explicitly signal.
+
+
+Support Code
+============
+
+Use the "PLAI Scheme" language. Your code must adhere to the following template, without any changes:
+
+(define-type Binding
+  [binding (name symbol?) (named-expr WAE?)])
+
+(define-type WAE
+  [num (n number?)]
+  [binop (op procedure?) (lhs WAE?) (rhs WAE?)]
+  [with (lob (listof Binding?)) (body WAE?)]
+  [id (name symbol?)])
+
+;; parse : s-exp -> WAE
+;; Consumes an s-expression and generates the corresponding WAE
+(define (parse sexp)
+  ...)
+
+;; interp : WAE -> number
+;; Consumes a WAE representation of an expression and computes
+;;   the corresponding numerical result
+(define (interp expr)
+  ...)
+
+
+Handin
+======
+
+Turn in a single file called rinterp.ss, that contains all of the code needed to run your parser and interpreter.You must do this assignment solo.

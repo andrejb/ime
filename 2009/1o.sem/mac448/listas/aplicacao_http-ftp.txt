@@ -1,0 +1,191 @@
+------------------------------------------------------------------------------
+
+1. Qual a diferença entre protocolo de Aplicação e Aplicação?
+
+Protocolo de aplicação é o conjunto de regras que a aplicação utiliza para se
+comunicar com outra aplicação.
+
+------------------------------------------------------------------------------
+
+2. Quais as principais aplicações da Internet e os seus respectivos protocolos
+de aplicação?
+
+Navegador: http
+Email: smtp, imap, pop
+Transferência de arquivos: ftp
+Servidor de nomes: DNS
+
+------------------------------------------------------------------------------
+
+3. Dê o nome de alguns agente-usuário (lado cliente) de mercado para as
+seguintes aplicações:
+
+    Web: Firefox, Internet Explorer, Opera, Netscape Navigator
+    Email: mutt, thunderbird, outlook-express, Eudora Mail
+    Áudio e vídeo armazenado: mplayer, vlc, Real Player, Windows Media Player
+
+------------------------------------------------------------------------------
+
+4. Como na internet um processo em uma máquina identifica um outro processo de
+outra máquina com o qual deseja se comunicar?
+
+R: Através do endereço IP e da porta que o processo utiliza para receber
+conexões no servidor.
+
+------------------------------------------------------------------------------
+
+5. O que é arquitetura cliente-servidor?
+
+É um modelo de comunicação onde o iniciativa de conexão é de um host (o
+cliente) enquanto que o outro aguarda conexões entrantes (o servidor).
+
+------------------------------------------------------------------------------
+
+6. Para as aplicações abaixo, diga se usam o protocolo de transporte TCP ou
+UDP e porquê?
+
+email: TCP, não tolera perda de dados, tolera atrasos.
+www: ídem acima.
+ftp -transferência de arquivos: ibidem.
+audio/video armazenado: UDP pois tolera perda de dados mas não tolera atrasos.
+
+------------------------------------------------------------------------------
+
+7. Porque o HTTP é dito ser um protocolo “sem estado”, ou “sem contexto”?
+
+O HTTP é um protocolo sem estado pois não guarda informações sobre os clientes
+entre uma conexão e outra.
+
+------------------------------------------------------------------------------
+
+8. Qual a diferença entre HTTP persistente com paralelismo (pipelining) e HTTP
+persistente sem paralelismo? Qual o padrão na versão HTTP/1.1?
+
+R: No HTTP persistente vários objetos são transferidos durante uma única
+conexão e o paralelismo possibilita que não seja necessário esperar o término
+da transferência de um objeto antes do início da transferência de outro. No
+HTTP sem persistência, o navegador precisa abrir várias conexões, uma para
+cada objeto.
+
+O padrão na versão 1.1 é HTTP com persistência e paralelismo.
+
+------------------------------------------------------------------------------
+
+9. Como o browser solicita ao servidor para não usar paralelismo?
+
+R: Com a seguinte linha de cabeçalho:
+
+   Connection: close
+
+------------------------------------------------------------------------------
+
+10. Na mensagem de request do HTTP, qual o significado dos 3 comandos existentes:
+
+GET: solicita uma página.
+POST: solicita uma página e envia dados inseridos pelo usuário.
+HEAD: solicita o cabeçalho da conexão, sem os dados de fato.
+
+------------------------------------------------------------------------------
+
+11. Na mensagem de request do HTTP, como o browser informa o server qual o seu
+tipo e qual a versão do HTTP que ele suporta?
+
+Versão HTTP: GET / HTTP/X.X, onde X.X é a versão.
+Tipo de navegador: User-Agent: YYYYYYY, onde YYYYYYY é o tipo do navegador.
+
+------------------------------------------------------------------------------
+
+12. Como é feito o GET condicional para que seja usado o cashing do próprio
+browser?
+
+if-modified-since: <data> <hora>
+
+------------------------------------------------------------------------------
+
+13. Como é feita a identificação do usuário no protocolo HTTP?
+
+Cookies ou sessão por string.
+
+------------------------------------------------------------------------------
+
+14. Como um servidor Cache numa rede local agiliza o tempo de resposta no
+acesso a páginas dos cliente desta rede local?
+
+R: Utiliza o parâmetro if-modified-since para verificar se sua versão do
+conteúdo está atualizada. Caso esteja, retorna o conteúdo sem pedí-lo para o
+servidor. Caso não esteja, requisita o conteúdo do servidor e armazena a nova
+versão.
+
+------------------------------------------------------------------------------
+
+15. Além de reduzir o tempo de resposta quais as outras vantagens de se usar
+servidores cache?
+
+R: Economia de banda de transferência, distribuição de conteúdo.
+
+------------------------------------------------------------------------------
+
+16. O que é uma rede de caching cooperativo?
+
+R: É uma hierarquia de servidores de cache, onde o que estiver no ponto mais
+alto da hierarquia pede para o servidor original o conteúdo, se não for
+encontrado.
+
+------------------------------------------------------------------------------
+
+17. O que é uma rede CDN – Content Delivery Network?
+
+Uma rede de caches para uma determinada aplicação. A idéia é que o cache que
+atende o usuário seja sempre o que estiver mais perto deste.
+
+------------------------------------------------------------------------------
+
+18. Supondo uma rede local de 25 Mbps, cujo router de saida para a internet
+possui uma link de 2Mbps.  Supondo que na rede local haja 50 requisições à
+internet por segundo, que o tamanho médio da página seja de 100Kbits. Qual a
+intensidade do tráfego na rede local? E no link da internet?
+
+Na rede local são originadas requisições que somam 50*100 = 5Mbps. A
+intensidade do tráfego é dada por Ir = 5 / 25 = 0,2.
+
+No link, a intensidade de tráfego é Il = 5 / 2 = 2.5, e portanto não
+funcionará.
+
+------------------------------------------------------------------------------
+
+19. Supondo que nesta rede local seja colocado um servidor de cache que atende
+em média 60% das requisições. Qual a intensidade do tráfego na rede local? E
+no link da internet?
+
+A intensidade na rede local continua a mesma, e no link de internet fica:
+
+  Il = 0.4 * 5 / 2 = 2 / 2 = 1
+
+A rede estará no seu limite.
+
+------------------------------------------------------------------------------
+
+20. Porque o protocolo FTP não é considerado "stateless"?
+
+O protocolo FTP guarda o usuário que está conectado e os diretórios de origem
+e destino.
+
+------------------------------------------------------------------------------
+
+21. O protocolo FTP usa 2 portas lógicas. Qual o uso de cada uma delas?
+
+R: 20 para transferência de dados e 21 para comandos de controle.
+------------------------------------------------------------------------------
+
+22. Quais os principais comandos do FTP?
+
+R: USER, PASS, LIST, RETR, STOR.
+
+------------------------------------------------------------------------------
+
+23. As conexões nas portas lógicas do FTP são ou não persistentes?
+
+Porta 20: uma conexão para cada arquivo (não persistente).
+Porta 21: uma conexão por sessão, até o comando QUIT (persistente).
+
+------------------------------------------------------------------------------

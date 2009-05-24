@@ -1,0 +1,67 @@
+##############################################################################
+# MAC0448 - Programação para Redes de Computadores
+# 1o. semestre de 2009
+# Prof.: Manoel Marcilio Sanches
+#
+# EP 1 - Servidor HTTP e Servidor de Mensagens
+# André Jucovsky Bianchi - 3682247
+##############################################################################
+
+
+Conteúdo deste arquivo
+======================
+
+  1. Descrição do trabalho.
+  2. Cliente aleatório.
+  3. Uso.
+
+
+1. Descrição do trabalho
+========================
+
+A solução escolhida para o trabalho foi a de encapsular três servidores em um.
+A classe principal HTTPServer inicializa duas threads com sub-servidores:
+FileUpdater e MessageServer. O primeiro é responsável por atualizar os dados
+das ações em um arquivo no disco, e o segundo ouve na porta especificada para
+receber mensagens de clientes com compra e venda de ações.
+
+Depois de lançar esses dois servidores, HTTPServer ouve em uma conexão TCP por
+mensagens HTTP e mostra a tabela de ações quando requisitado.
+
+
+2. Cliente aleatório
+====================
+
+Como pedido no enunciado, também foi desenvolvido um cliente para o servidor
+de mensagens que se conecta ao servidor em intervalos aleatórios de tempo
+entre 1 e 20 segundos e envia uma mensagem com dados de comrpa ou venda, que
+também são funções de valores aleatórios.
+
+Ao conectar-se no servidor, o cliente de mensagens recebe os valores das 5
+ações disponíveis para poder escolher qual negociar e os valores razoáveis.
+
+
+3. Uso
+======
+
+Para compilar o servidor e o cliente aleatório de testes, digite:
+
+  make
+
+Para rodar o servidor http na porta XXXX e o servidor de mensagens na porta
+YYYY, digite:
+
+  make HTTPServer.jar
+  java -jar HTTPServer.jar XXXX YYYY
+
+Para rodar o cliente aleatório para testes, digite:
+
+  make RandomClient.class
+  java RandomClient YYYY
+
+O Makefile vem configurado com duas diretivas para testes rápidos:
+
+  make run  - compila e roda o servidor com servidor http na porta 8080 e
+              servidor de mensagens na porta 8888.
+  make test - compila e roda o cliente aleatório e roda ele com a opção
+              8888.

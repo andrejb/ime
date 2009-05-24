@@ -1,0 +1,193 @@
+You must do this assignment solo. We know that some of you are not yet
+comfortable with Scheme; for that reason, we will weight this assignment very,
+very low in the overall score. Doing poorly on it will not at all damage your
+course grade. But, you should exploit this opportunity to become familiar with
+the style of programming you will do in the rest of the semester.
+
+
+Extended Interpreter
+====================
+
+  1. Write a parser and interpreter for the CFWAE language we've discussed in
+     class, extended with the language features described below. Your interpreter
+     should have eager application semantics and use deferred substitution.
+
+  2. After completing the first part of the assignment, copy the resulting
+     interpreter and modify it so that it has lazy application semantics. (We
+     strongly recommend that you not attempt this part of the assignment until
+     you've gotten the first interpreter done, thoroughly tested, and debugged!)
+     Ensure you don't miss the change you must make to the type definitions for
+     this part.
+
+In each part of the assignment, implement the function parse, which consumes
+an expression in the language's concrete syntax and returns the abstract
+syntax representation of that expression. parse must accept only expressions
+in the syntax of the language.
+
+In addition to parse, you must implement the function interp, which consumes
+an abstract syntax expression (as returned by the parse function) and returns
+a CFWAE-Value.
+
+You must include a contract for every function that you write and include test
+cases that amply exercise all of the code you've written. We will not give any
+credit to untested functionality, even if it is correct! (Note that DrScheme
+will tell you if any of your code is untested.) Refer to the syllabus for
+style requirements.
+
+
+Features to Implement
+=====================
+
+CFWAE
+
+As the name suggests, your language should support conditionals, functions,
+with, and arithmetic expressions.
+
+
+Conditionals
+
+    To save the trouble of having to add boolean values and operators over
+them, create the construct if0 using the syntax described by the EBNF below.
+Note that if0 has three branches:
+
+        * A test expression
+        * A "then" expression, which evaluates if the test expression
+          evaluates to zero
+        * An "else" expression, which evaluates for any other number.
+
+    Evaluation should signal an error for non-numeric test values.
+
+
+Multi-argument fun
+
+Extend the fun language feature described in lecture so that functions can
+accept a list of zero or more arguments instead of just one. All arguments to
+the function must evaluate with the same deferred substitutions. An example of
+a multi-argument fun:
+
+    {{fun {x y} {* x y}} 2 3}
+
+This evaluates to 6.
+
+As you did for multi-armed with, you must ensure that the arguments to a
+function have distinct names.
+
+
+Syntax
+======
+
+The syntax of the language you should implement can be captured with the
+following grammar:
+
+<CFWAE> ::= <num>
+    | {+ <CFWAE> <CFWAE>}
+    | {- <CFWAE> <CFWAE>}
+    | {* <CFWAE> <CFWAE>}
+    | {/ <CFWAE> <CFWAE>}
+    | <id>
+    | {if0 <CFWAE> <CFWAE> <CFWAE>}
+    | {with {{<id> <CFWAE>} ...} <CFWAE>}
+    | {fun {<id> ...} <CFWAE>}
+    | {<CFWAE> <CFWAE> ...}
+
+where an id is not +, -, *, /, with, if0 or fun.
+
+In this grammar, the ellipsis (...) means that the previous non-terminal is
+present zero or more times.
+
+If a fun or a with expression has duplicate identifiers, we consider it a
+syntax error. Therefore, such errors must be detected in parse. For example,
+parsing the following expressions must signal errors:
+
+{with {{x 10} {x 20}} 50}
+
+{fun {x x} 10}
+
+
+Scheme's (match ...) Syntax
+===========================
+
+If you're feeling better with Scheme and think your rinterp parser is
+disgusting, now might be the time to take a look at Scheme's (match ...)
+syntax. But it is still (and always will be) not required.
+
+
+Testing Your Code
+=================
+
+Your parser and interpreter must detect errors and explicitly signal them by
+calling (error ...). We will consider an error raised internally by Scheme to
+be a bug in your code.
+
+For example, Scheme signals a "divide by zero" error if you attempt to
+evaluate (/ 1 0). Since we use Scheme's division function to implement
+division in this assignment, you may be tempted to leave it to Scheme to
+signal division by zero errors for you. However, you must signal the error
+yourself by explicitly testing for division by zero before calling Scheme's
+division procedure.  If you are not sure if an error raised by your program
+constitutes a bug, search the DrScheme Help for test/exn. test/exn tests for
+errors, but only succeeds on errors that you explicitly signal.
+
+
+Support Code
+============
+
+Use the "PLAI Scheme" language. Your code must adhere to the following
+template, without any changes:
+
+(define-type Binding
+  [binding (name symbol?) (named-expr CFWAE?)])
+
+(define-type CFWAE
+  [num (n number?)]
+  [binop (op procedure?) (lhs CFWAE?) (rhs CFWAE?)]
+  [with (lob (listof Binding?)) (body CFWAE?)]
+  [id (name symbol?)]
+  [if0 (c CFWAE?) (t CFWAE?) (e CFWAE?)]
+  [fun (args (listof symbol?)) (body CFWAE?)]
+  [app (f CFWAE?) (args (listof CFWAE?))])
+
+(define-type Env
+  [mtEnv]
+  [anEnv (name symbol?) (value CFWAE-Value?) (env Env?)])
+
+(define-type CFWAE-Value
+  [numV (n number?)]
+  [closureV (params (listof symbol?))
+            (body CFWAE?)
+            (env Env?)])
+
+;; parse : expression -> CFWAE
+;; This procedure parses an expression into a CFWAE
+(define (parse sexp)
+  ...)
+
+;; interp : CFWAE -> CFWAE-Value
+;; This procedure interprets the given CFWAE and produces a result
+;; in the form of a CFWAE-Value (either a closureV or a numV)
+(define (interp expr)
+  ...)
+
+
+For the second part of the assignment (lazy application), you will need to add
+an exprV variant to CFWAE-Value. That is, CFWAE-Value for xinterp-lazy.ss
+should read:
+
+(define-type CFWAE-Value
+  [numV (n number?)]
+  [closureV (params (listof symbol?))
+            (body CFWAE?)
+            (env Env?)]
+  [exprV (expr CFWAE?) (env Env?)]))
+
+That said, note that interp should never return an exprV. The top-level is
+always a strictness point.
+
+
+Handin
+======
+
+Turn in two files where each contains all of the code needed to run your parser and interpreter:
+
+   1. xinterp.ss, which uses eager evaluation.
+   2. xinterp-lazy.ss, which uses lazy evaluation.

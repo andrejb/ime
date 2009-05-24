@@ -1,0 +1,168 @@
+------------------------------------------------------------------------------
+
+1. É possível usar o UDP numa aplicação de dados com garantia de entrega dos
+dados? como?
+
+Sim, mas é necessário que a camada de aplicação se encarregue da entrega,
+implementando esquemas de confirmação de recebimento e retransmissão de
+pacotes em caso de perda ou entrega de segmentos de dados corrompidos.
+
+------------------------------------------------------------------------------
+
+2. Dois clientes A e B iniciam uma sessão Telnet (porta 23) com um servidor S.
+Dê possíveis números de porta origem e destino para:
+
+R: Telnet utiliza o protocolo TCP, portanto a cada pacote são associadas uma
+porta de origem e uma porta de destino que, junto com o endereço IP do host de
+origem identificam unicamente o processo de origem. A porta de origem
+utilizada é alguma porta que esteja disponível, ou seja, não esteja sendo
+utilizada por nenhum outro processo.
+
+Suponhamos que que o host A utilize a porta 2001 e o host B utilize a porta
+8290. Então, temos:
+
+  a. Segmentos enviados de A para S.
+     R: origem: 2001, destino: 23.
+
+  b. Segmentos enviados de B para S.
+     R: origem: 8290, destino: 23.
+
+  c. Segmentos enviados de S para A.
+     R: origem: 23, destino: 2001.
+
+  d. Segmentos enviados de S para B.
+     R: origem: 23, destino: 8290.
+
+  e. Se A e B são hosts diferentes, podem ter o mesmo número de porta origem
+     para os segmentos de A para S e B para S? Se sim, como o servidor
+     distingue os dois hosts?
+
+     R: Sim, a distinção é feita utilizando o endereço IP do host de origem.
+        A tripla (ip_origem, porta_origem, porta_destino) identifica
+        unicamente o processo e host de origem.
+
+  f. Idem se A e B forem o mesmo host.
+
+     R: Os processos A e B devem alocar para sua própria utilização portas que
+        não estejam sendo utilizadas por nenhum oturo host, portanto não podem
+        alocar a mesma porta.
+
+------------------------------------------------------------------------------
+
+3. Porquê o UDP é mais eficiente que o TCP?
+
+R: UDP é um protocolo sem conexão, portanto não precisa gastar tempo com
+handshaking antes de iniciar a transmissão dos dados. Não há também tempo
+gasto com garantia de entrega, através de confirmações e retransmissões de
+pacotes perdidos ou extraviados. Além disso, não há controle de fluxo ou de
+congestionamento, portanto o UDP utiliza toda a banda disponível para
+trasmissão.
+
+------------------------------------------------------------------------------
+
+4. Qual a necessidade do número de sequência de pacotes na versão 2.1 do
+protocolo confiável?
+
+Sem números de sequência, não é possível para o host de destino saber se um
+pacote que está chegando é uma retransmisssão, ou se trata-se de um novo
+pacote.
+
+------------------------------------------------------------------------------
+
+5. Porquê bastam 2 números de sequência 0 e 1?
+
+Bastam dois números pois, mais do que saber se o pacote esperado é o de número
+0 ou o de número 1, a informação relevante é se o pacote é ou não uma
+retransmissão (de forma similar, se ele é ou não um pacote novo), e esta
+informação, por sua natureza binária, pode ser armazenada em um único bit.
+
+O servidor de origem mantém um contador módulo 2 cujo valor representa o
+número (módulo 2) do pacote esperado, digamos 0, e é o mesmo número enviado
+para o host de origem na mensagem ACK. O host de origem, por sua vez, recebe o
+ACK(O) e envia o próximo pacote da fila, de número 0.
+
+Se o pacote se perder no meio do caminho, ou se o mesmo ocorrer com o ACK(1)
+enviado do destino para a origem após o recebimento com sucesso do pacote,
+o contador da origem eventualmente acusará TIMEOUT, causando o re-envio do
+pacote 0.
+
+Ao receber novamente o pacote 0, por ter seu contador em 1, o destino saberá
+que se trata de um re-envio e enviará novamente um ACK(1) para a origem.
+
+------------------------------------------------------------------------------
+
+6. Como o NACK pode ser eliminado na versão 2.1 do protocolo confiável?
+
+Um NACK pode ser substituído por um ACK para último pacote recebido
+corretamente, ou seja, o de maior número de sequência entre os que já foram
+recebidos sem buracos na sequência. Assim, sempre que a origem recebe dois
+ACKS para um mesmo pacote, sabe que os seguintes não foram recebidos com
+sucesso.
+
+------------------------------------------------------------------------------
+
+7. Considere o protocolo 3.0. Desenhe uma sequência de passos para quando:
+
+a) O pacote enviado se corrompe
+
+   origem                     |  destino
+   rdt_send(pkt0) ----------> X  --
+   timeout && rdt_send(pkt0) --> 
+
+
+b) O ACK recebido chega corrompido
+
+------------------------------------------------------------------------------
+
+8. Dada uma janela de tamanho N, quais os 4 intervalos existentes relativos
+aos pacotes que já receberam ACK e os que ainda não receberam no protocolo
+GBN?
+
+R:  1. Pacotes já confirmados.
+    2. Pacotes enviados e ainda não confirmados.
+    3. Pacotes prontos para envio.
+    4. Pacotes não utilizáveis por estarem fora da janela.
+
+------------------------------------------------------------------------------
+
+9. E no protocolo Selective Repeat?
+
+R: Os intervalos são essencialmente os mesmos, porém os pacotes enviados e
+ainda não confirmados são intercalados com alguns pacotes já confirmados.
+
+------------------------------------------------------------------------------
+
+10. O que ocorrem com os pacotes recebidos fora de ordem no GBN e no SR?
+
+R: No GBN os pacotes são descartados e é enviado um ACK para o último pacote
+recebido em ordem. No SR, se o pacote recebido estiver dentro da janela de
+recebimento, o pacote aguarda em um buffer a chagada dos pacotes de número
+menor até que todo um lote possa ser entregue em ordem para a camada de cima.
+Caso o pacote recebido esteja fora da janela, ele é descartado.
+
+------------------------------------------------------------------------------
+
+11. No GBN, qual a situação em que o lado que transmite decide repetir os
+pacotes a partir do n-ésimo?
+
+R: Timeout do recebimentodo pacote n.
+
+------------------------------------------------------------------------------
+
+12. No SR, como o lado que transmite decide repetir o pacote de número n?
+
+Timeout do recebimento do pacote n.
+
+------------------------------------------------------------------------------
+
+13. No SR, há sempre um relógio ativo para cada pacote ainda não confirmado
+enquanto no GBN não.  Porque?
+
+R: Por causa da política de retransmissão de cada protocolo. Para que sejam
+retransmitidos individualmente os pacotes identificados como não entregues,
+é necessário um timer individual para cada um (que na verdade poder ser
+simulado com apenas um único timer de sistema). No GBN a retransmissão é feita
+para todo um bloco de pacotes de N até NEXTSEQNUM e portanto apenas um timer
+para o pacote n é necessário.
+
+------------------------------------------------------------------------------

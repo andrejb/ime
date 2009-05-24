@@ -1,0 +1,236 @@
+------------------------------------------------------------------------------
+
+1. Explique resumidamente o significado das seguintes características gerais
+do TCP: ponto-a-ponto; transporte confiável; pipeline; full duplex; orientado
+a conexão;fluxo controlado; congestionamento controlado
+
+R: Ponto-a-ponto: O TCP estabelece uma conexão entre dois processos rodando
+possivelmente em hosts diferentes. Apesar de haver uma série de nós no meio do
+caminho, para a camada de aplicação estes intermediários são transparentes, e
+a conexão se estabelece como se os dois processos estivessem conectados
+diretamente, ponto a ponto.
+
+Transporte confiável: trata-se de garantir a entrega dos dados para o lado
+receptor. Para isto, é necessário cuidar de pacotes que podem ter sido
+perdidos no meio do caminho, e de pacotes que tenham se avariado durante o
+transporte. Geralmente utiliza-se um esquema de confirmação de recebimento
+(ACKs) e retransmissão de pacotes.
+
+Pipeline: o TCP não é um protocolo do tipo Stop-and-Wait, ou seja, pode enviar
+um certo número de  pacotes sem ter recebido confirmação de alguns pacotes
+enviados anteriormente. A fila de pacotes enviados aguardando confirmaçao é
+chamada de pipeline e permite aumentar muito a performance da transmissão.
+
+Full-Duplex: em uma conexão TCP, os dados devem fluir da origem para o
+destino, porém para controle de entrega, fluxo e congestionamento, são
+utilizados pacotes enviados nas duas direções ao mesmo tempo. Essa
+característica chama-se Full-Duplex.
+
+Orientaçao à conexão: antes de poder iniciar a transmissão dos dados, o TCP
+realiza um handshaking com o lado receptor, estabelecendo assim uma conexão
+entre os dois hosts.
+
+Fluxo controlado: o lado de destino da conexão pode enviar informações sobre
+sua capacidade de consumo de dados para a origem, que por sua vez utilizará
+essas informações para controlar o fluxo de dados enviados. Dessa forma, o
+host de destino garante que o fluxo de chegada é compatível com sua capacidade
+de processamento dos dados.
+
+Controle de congestionamento: Alguns algoritmos rodam nos roteadores da rede
+com o objetivo de controlar o congestionamento da rede como um todo, e não
+sobrecarregar nenhum nó que esteja no meio do caminho da conexão TCP entre a
+origem e o destino.
+
+------------------------------------------------------------------------------
+
+2. No header do pacote TCP, qual o significado do número de sequência do
+    pacote (32 bits) e o número de ACK (32 bits)?
+
+R: O número de sequência do pacote identifica unicamente cada byte dos dados
+enviados na conexão. Esta identificação, junto com o número de bytes por
+pacote, permite que o destino reconheça quais bytes já chegaram e possa desta
+forma reordenar os pacotes caso cheguem fora de ordem. O lado de destino envia
+ACKs para a origem confirmando o recebimento dos bytes/pacotes. O número ACK
+confirma o recebimento de um pacote ou de uma sequência de pacotes, geralmente
+indicando o número do próximo byte esperado.
+
+------------------------------------------------------------------------------
+
+3. No header do pacote TCP, qual o significado do campo RcvWindow?
+
+LastByteReceived - LastByteRead <= RcvBuffer
+RcvWindow = RcvBuffer - (LastByteReceived - LastByteRead)
+
+------------------------------------------------------------------------------
+
+4. Explique a técnica de piggyback (carona) no TCP.
+
+R: Piggyback trata-se do envio de ACKs junto de pacotes que contém dados de um
+lado para o outro.
+
+------------------------------------------------------------------------------
+
+5. O que é controle de fluxo e como isso é feito no TCP?
+
+R: Para estabelecer o controle de fluxo, o destino informa a origem de qual é
+a sua janela de recebimento, ou seja, quantos bytes ainda cabem no seu buffer
+de leitura, a cada momento.
+
+De posse desta informação, o cliente pode controlar o fluxo de saída de seus
+dados para garantir que o destino não perca pacotes por não caberem em seu
+buffer.
+
+------------------------------------------------------------------------------
+
+6. O que é controle de congestionamento e como isso é feito no TCP?
+
+R: O controle de congestionamento serve para evitar que os roteadores no meio
+do caminho entre a origem e o destino recebam mais segmentos do que seus
+recursos conseguem gerenciar.
+
+O servidor de origem mantém duas variáveis, CongWindow e Threshold, de forma a
+manter um balanço entre o envio de pacotes, recebimento de ACKs e timeouts.
+CongWindow representa a quantidade de bytes que podem ser enviados à rede de
+uma só vez, e varia de acordo com o valor de Threshold da seguinte forma:
+
+  * Se CongWindow < Threshold, CongWindow dobra a cada RTT (Round-Trip-Time).
+  * Se CongWindow >= Threshold, CongWindow cresce linearmente a cada RTT.
+  * Se houver um timeout, ou ACK duplicado para algum segmento,
+    * Threshold = CongWindow / 2
+    * CongWindow = 1 MMS
+
+É bom lembrar que a taxa de envio deve respeitar:
+
+  LastByteSent - LastByteReceived <= min(CongWin, RcvWindow)
+
+------------------------------------------------------------------------------
+
+7. O controle de fluxo e o controle de congestionamento têm o mesmo
+    objetivo?
+
+R: Sim.
+
+------------------------------------------------------------------------------
+
+8. Se sim, qual é esse objetivo. Se não, qual o objetivo de cada um deles?
+
+Ambos os processos têm o objetivo de manter o fluxo de dados em um nível
+aceitável pela rede, levando em consideração todos os atores envolvidos. A
+diferença é que o controle de fluxo trata do consumo de dados pelo lado de
+destino, enquanto que o controle de congestionamento trata do fluxo de dados
+pelos roteadores da rede.
+
+------------------------------------------------------------------------------
+
+9. A iniciativa para cada um destes controles é tomada pelo lado origem ou
+    pelo lado destino de cada conexão?
+
+Controle de fluxo: lado de destino.
+Controle de congestão: lado de origem.
+
+------------------------------------------------------------------------------
+
+10.Quantas mensagens são trocadas no TCP para estabelecer uma conexão e
+    quais são elas?
+
+R: 3 mensagens são trocadas para estabelecer a conexão:
+
+  1. requisição de conexão do cliente para o servidor:
+     SYN = 1, seq = client_seq;
+  2. conexão aceita do servidor para o cliente:
+     SYN = 1, seq = server_seq, ack = client_seq+1
+  3. confirmação de conexão do cliente para o servidor:
+     SYN = 0, seq = client_seq+1, ack = server_seq+1
+
+------------------------------------------------------------------------------
+
+11.Quantas mensagens são trocadas no TCP para fechar uma conexão e quais
+    são elas?
+
+R: 4 mensagens são trocadas para finalizar a conexão. Qualquer um dos lados
+pode finalizar a conexão, então aqui ao invés de denominarmos os lados de
+origem e destino, chamaremos de host A e B.
+
+  1. requisição de fim de conexão de A para B:
+     FIN = 1, seq = A_seq, ACK = B_seq+1
+  2. confirmação de recebimento de requisição de fim de conexão, de B para A:
+     FIN = 0, seq = B_seq+1, ACK = A_seq+1
+  3. requisição de fim de conexão de B para A:
+     FIN = 1, seq = B_seq+2
+  4. confirmação de recebimento de requisição de fim de conexão de A para B:
+     FIN = 0, seq = A_seq+1, ACK = B_seq+3
+
+------------------------------------------------------------------------------
+
+12.Quais são as 2 maneiras de tratar o congestionamento? Qual é a maneira do
+    TCP?
+
+As duas maneiras de tratar o congestionamento podem ser identificadas de
+acordo com o fato do protocolo contar ou não com informações disponibilizadas
+pela camada de rede sobre seu tráfego e condições de congestionamento.
+
+Se houver informações disponíveis da camada de rede, o controle é chamado
+controle de congestão assistido pela rede. Tipicamente há um algoritmo rodando
+pela rede que grava estatísticas de utilização nos cabeçalhos de rede dos
+pacotes, que podem ser analisados pelas camadas mais altas nos sistemas
+finais.
+
+Se não há informações da camada de rede, o controle é chamado de controle de
+congestionamento Fim-a-Fim, e a existência de congestionamento deve ser
+inferida pelos hosts nas pontas da conexão. Esta é a dorma que o TCP utiliza
+para controlar o congestionamento, uma vez que a camada de rede IP não fornece
+nenhuma estatística sobre seu estado.
+
+------------------------------------------------------------------------------
+
+13. Quais as 2 fases em cada conexão através das quais o TCP controla o
+congestionamento?
+
+R:
+
+  * Slow Start.
+  * Congestion avoidance.
+
+------------------------------------------------------------------------------
+
+14. Dê o algoritmo resumido para cada uma das fases.
+
+R:
+
+  * Slow Start: aumenta o valor de CongWindow exponencialmente a partir de 1
+    MMS até que CongWindow >= Threshold.
+  * Congestion avoidance: aumenta linearmente o valor de CongWindow até que
+    haja detecção de erro com timeout o ACK duplicado para algum segmento.
+
+------------------------------------------------------------------------------
+
+15. O objetivo dessas duas fases é só controlar o congestionamento? Se não é,
+    diga os outro(s) objetivos.
+
+R: O objetivo principal é controlar o congestionamento, porém utilizando esta
+política, o TCP utiliza toda a banda disponível para transporte.
+
+------------------------------------------------------------------------------
+
+16. Porque é necessário uma boa estimativa do timeout e como o TCP faz essa
+    estimativa?
+
+R: O timeout deve ser maior que o RTT, mas não deve ser demasiado grande pois
+senão os pacotes não entregues não serão detectados com rapidez suficiente e
+isto afetará a taxa de transmissão.
+
+EstimatedRTT = (1 - x).EstimatedRTT + x.SampleRTT
+Timeout = EstimatedRTT + 4*Deviation
+Deviation = (1-x) Deviation + x | SampleRTT - EstimatedRTT |
+
+------------------------------------------------------------------------------
+
+17.Porque e como o cálculo dinâmico do RTT privilegia as amostras mais
+    recentes?
+
+Ao utilizar um peso fixo para a amostra mais nova do RTT, as amostras mais
+antigas têm peso menor a cada passo do cálculo de um novo EstimatedRTT. Isto
+é importante pois os pacotes mais novos refletem melhor o estado atual da rede
+do que os antigos.
+
+------------------------------------------------------------------------------

@@ -1,0 +1,17 @@
+Scheme
+Para aprender scheme, use este excelente pána:
+http://www.ccs.neu.edu/home/dorai/t-y-scheme/t-y-scheme.html
+
+DrScheme
+Usaremos o drscheme, que jáoi instalado na rede Linux. O programa estáisponíl para váas plataformas e pode ser obtido aqui.
+
+Biblioteca do curso
+Para poder usar os recursos especícos do livro, vocêrecisaráarregar a biblioteca especíca. Isto sóecisa ser feito uma vez. A biblioteca estáqui.
+
+Para caregáa, entre no DrScheme, selecione "File", "Install .plt File" e indique a localizaç do arquivo. Vocêode fornecer a URL diretamente:
+
+http://paca.ime.usp.br/file.php/287/plai-350.plt
+Feito isso, vám "Language", "Teaching Languages", "PLAI - Pretty Big". Talvez vocêenha que reiniciar o programa para que esta opç apareç
+
+Ajuda
+O DrScheme conta com um sistema de ajuda muito bom, no HelpDesk, que contéinclusive o Teach Yourself Scheme in Fixnum Days

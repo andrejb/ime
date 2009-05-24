@@ -1,0 +1,112 @@
+------------------------------------------------------------------------------
+
+1. Dê exemplos de programas de email cliente (agente usuário) que usem
+interface gráfica e que usem interface texto.
+
+Gráficos: Mozilla Thunderbird, Eudora Mail
+Texto: mutt, pine.
+
+------------------------------------------------------------------------------
+
+2. Quais os comandos trocados por um cliente com um servidor de email dentro
+do protocolo SMTP antes de enviar o conteúdo da mensagem?
+
+Servidor: 220 <url do servidor>
+Cliente:  HELO <url do cliente>
+Servidor: 250 <mensagem de boas vindas do servidor>
+Cliente:  MAIL FROM: <endereço e-mail do remetente>
+Servidor: 250 <OK do servidor>
+Cliente:  RCPT TO: <endereço e-mail do destinatário>
+Servidor: 250 <OK do servidor>
+Cliente:  DATA
+Servidor: 354 <OK do servidor - podemos começar a enviar a mensagem e
+              terminá-la por ".">
+
+------------------------------------------------------------------------------
+
+3. A conexão SMTP é persistente ou não? Porquê?
+
+Persistente. A cada conexão várias mensagens são trocadas entre cliente e
+servidor.
+
+------------------------------------------------------------------------------
+
+4. Porque o servidor de email tem implementado os lados cliente e servidor do
+protocolo SMTP?
+
+R: O servidor de email atua como servidor para o usuário que quer enviar uma
+mensagem e como cliente de outros servidores SMTP para os quais terá que
+direcionar a mensagem vinda do usuário.
+
+------------------------------------------------------------------------------
+
+5. Qual a necessidade do MIME para o email? Quais são seus atributos?
+
+R: MIME permite o envio de dados que não sejam texto ASCII puro. Seus
+atributos são versão (MIME-Version), codificação (Content-Transfer-Encoding)
+e tipo de conteúdo transferido (Content-Type).
+
+------------------------------------------------------------------------------
+
+6. Quais os tipos e subtipos principais do MIME, que aparecem no header
+Content-Type: ?
+
+R: text/plain, text/html, image/jpeg, image/gif, etc.
+
+------------------------------------------------------------------------------
+
+7. Qual o significado do header Content-Type:multipart/mixed; boundary=texto ?
+
+Indica que neste email serão enviados amis de um tipo de dados. O boundary
+representa a string delimitadora entre um conteúdo e outro.
+
+Sempre que um novo conteúdo for ser transmitido, é necessário redefinir o
+Content-Type e Content-Transfer-Encoding.
+
+------------------------------------------------------------------------------
+
+8. Suponha que você envie uma email sem anexos e depois o mesmo email com um
+arquivo anexo msword. Quais atributos adicionais (linhas de header) irão
+aparecer no segundo caso?
+
+------------------------------------------------------------------------------
+
+9. Porquê o SMTP não é usado para descarregar os emails na máquina do usuário
+final? Quais os protocolos que fazem isso?
+
+------------------------------------------------------------------------------
+
+10. Quais os protocolos de acesso a email, isto é, para ler os emails do
+servidor e quais são as suas características?
+
+------------------------------------------------------------------------------
+
+11. Da perspectiva do usuário, qual a diferença entre o modo “ler e apagar”e
+“ler e guardar” no POP3? E da perspectiva do protocolo?
+
+------------------------------------------------------------------------------
+
+12. Qual a diferença entre uma requisição iterativa e uma requisição recursiva
+no DNS?
+
+------------------------------------------------------------------------------
+
+13. Qual a relação da aplicação DNS com o caching?
+
+------------------------------------------------------------------------------
+
+14. Além da tradução de nomes em endereços IP, cite outros serviços que são
+oferecidos por uma aplicação DNS.
+
+------------------------------------------------------------------------------
+
+15. Descreva a hierarquia de servidores DNS que são consultados para fazer uma
+tradução de nome para endereço IP.
+
+------------------------------------------------------------------------------
+
+16. Numa requisição DNS podem haver 0, 2, 4, 6 ou 8 troca de mensagens entre o
+cliente e os vários servidores DNS da rede. Dê um exemplo onde ocorre 0 troca
+de mensagens? Idem 2, 4, 6 e 8?
+
+------------------------------------------------------------------------------

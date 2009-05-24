@@ -1,0 +1,109 @@
+------------------------------------------------------------------------------
+
+1. No TCP o cliente pede conexão antes de trocar informações com o servidor.
+Usando sockets, como isso é feito?
+
+  Socket cs = new Socket("hostname", 6789);
+
+------------------------------------------------------------------------------
+
+2. O Cliente deve criar os dutos de ligação com o servidor antes de trocar
+informações. Como é feito?
+
+  DataOutputStream saida = new DataOutputStream(cs.getOutputStream());
+  BufferedReader entrada = new BufferedReader(
+    new inputStreamReader(cs.getInputStream()));
+
+------------------------------------------------------------------------------
+
+3. Como o Cliente envia e recebe bytes do Servidor?
+
+  String x;
+  String y;
+  // envia
+  saida.writeBytes(x + '\n');
+  // recebe
+  y = entrada.readLine();
+
+------------------------------------------------------------------------------
+
+4. Como o cliente fecha a conexão com o servidor?
+
+Socket conncetionSocket = new Socket(ip, porta);
+connectionSocket.close();
+
+
+------------------------------------------------------------------------------
+
+5. O servidor deve aceitar a conexão do cliente antes de trocar informações
+com o cliente. Como é feito?
+
+  // cria socket de comunicação com os clientes na porta 6789
+  ServerSocket ss = new ServerSocket(6789);
+  // espera conexão de algum cliente
+  Socket cc = ss.accept();
+
+------------------------------------------------------------------------------
+
+6. O Servidor deve criar os dutos de ligação com o cliente antes de trocar
+informações. Como é feito?
+
+  // cria streams de entrada e saida com o cliente que chegou
+  BufferedReader entradaCliente = new BufferedReader(new InputStreamReader(
+                                    cc.getInputStream()));
+  DataOutputStream saidaCliente = new DataOutputStream(
+                                     cc.getOutputStream());
+
+------------------------------------------------------------------------------
+
+7.   Como o Servidor envia e recebe bytes do Cliente?
+
+  String x;
+  String y;
+  // recebe
+  x = entradaCliente.readLine();
+  // envia
+  saidaCliente.writeBytes(y);
+
+------------------------------------------------------------------------------
+
+8. Para se enviar um pacote em UDP de um cliente para um servidor, quais são
+as informações necessárias?
+
+Os dados, tamanho em bytes dos dados, endereço IP do servidor e porta.
+
+------------------------------------------------------------------------------
+
+9. Dê um exemplo em Java de como se monta e envia um pacote em UDP.
+
+  DatagramSocket clientSocket = new DatagramSocket();
+  InetAddress IPAddress = InetAddress.getByName("hostname");
+  byte[] sendData = new byte[1024];
+  senddata = “dados a serem enviados”;
+  DatagramPacket sendPacket =
+         new DatagramPacket(sendData, sendData.length, IPAddress, 9876);
+  clientSocket.send(sendPacket);
+
+
+------------------------------------------------------------------------------
+
+10. Dê um exemplo em Java de como se recebe um pacote UDP e se retira dele: os dados, a porta de
+    origem e o endereço IP de origem.
+
+  byte[] receiveData = new byte[1024];
+  DatagramPacket receivePacket =
+         new DatagramPacket(receiveData, receiveData.length);
+  clientSocket.receive(receivePacket);
+  String dados = new String(receivePacket.getData());
+  int port = receivePacket.getPort();
+  InetAddress IPAddress = receivePacket.getAddress();
+
+------------------------------------------------------------------------------
+
+11. Exercício para fazer em casa
+        •   estudar com detalhes o java.net.*
+            •   Classes TCP - ServerSocket e Socket
+            •   Classes UDP - DatagramSocket e DatagramPacket
+
+------------------------------------------------------------------------------
+

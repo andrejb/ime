@@ -1,0 +1,55 @@
+##############################################################################
+# MAC0448 - Programação para Redes de Computadores
+# 1o. semestre de 2009
+# Prof.: Manoel Marcilio Sanches
+#
+# EP 2 - Servidor de Bolsa de Valores
+# André Jucovsky Bianchi - 3682247
+##############################################################################
+
+
+Conteúdo deste arquivo
+======================
+
+  1. Descrição do trabalho.
+  2. Uso.
+
+
+1. Descrição do trabalho
+========================
+
+A solução escolhida para o trabalho foi a de encapsular três servidores em um.
+A classe principal StockServer inicializa duas threads com sub-servidores:
+FileUpdater e MessageServer. O primeiro é responsável por atualizar os dados
+das ações em um arquivo no disco, e o segundo ouve na porta especificada para
+receber mensagens de clientes com compra e venda de ações.
+
+Depois de lançar esses dois servidores, StockServer ouve em uma conexão TCP por
+mensagens Stock e mostra a tabela de ações quando requisitado.
+
+
+2. Uso
+======
+
+Para compilar o servidor, o cliente aleatório de testes, e o cliente da bolsa,
+digite:
+
+  make
+
+Para rodar o servidor na porta XXXX e o servidor de mensagens na porta
+YYYY, digite:
+
+  make StockServer.jar
+  java -jar StockServer.jar XXXX YYYY
+
+Para rodar o cliente aleatório para testes, digite:
+
+  make RandomClient.class
+  java RandomClient YYYY
+
+O Makefile vem configurado com duas diretivas para testes rápidos:
+
+  make run  - compila e roda o servidor com servidor na porta 8080 e servidor
+              de mensagens na porta 8888.
+  make test - compila e roda o cliente aleatório e roda ele com a opção
+              8888.
