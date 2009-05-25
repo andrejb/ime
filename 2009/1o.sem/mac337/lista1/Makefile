@@ -2,7 +2,9 @@ TEXFILES = lista1.tex
 GRAPHICS = grafico-1a.eps grafico-1a-transformada.eps grafico-1b.eps grafico-1b-transformada.eps grafico-1c.eps grafico-1c-transformada.eps
 
 lista1.pdf: $(TEXFILES) $(GRAPHICS)
-	latex $<
+	latex -output-format=dvi $<
+	dvipdf lista1.dvi
+	make partial-clean
 
 grafico-1a.eps: grafico-1a.gnuplot
 	gnuplot $<
@@ -28,8 +30,10 @@ grafico-1c-transformada.eps: grafico-1c-transformada.gnuplot
 	tail -n +6 1c-sintese.data | ./fix_data6pi.rb > 1c-sintese-fixed.data
 	gnuplot $<
 
-clean:
-	rm -f *.data *.{aux,log,dvi,pdf} *.eps
+partial-clean:
+	rm -f *.data *.{aux,log,dvi,eps}
 	
+clean: partial-clean
+	rm -f *.pdf
 	
 	
