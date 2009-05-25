@@ -1,15 +1,48 @@
 %-----------------------------------------------------------------------------
 % Exercicio 4
-\section{Quarto Exercício:}
+\section{Quarto Exercício: Polos e Zeros}
 
 %-----------------------------------------------------------------------------
 % 4.a
 \subsection{}
 
+\[\displaystyle
+\begin{array}{l c l}
+  H(z) & = & \frac{a_0 (1 - Z_1 z^{-1})(1 - Z_2 z^{-1} )}{(1 - P_1 z^{-1})(1 - P_2 z^{-1})} \quad = \quad \frac{a_0 (1+\sqrt{A}z^{-1})(1-\sqrt{A}z^{-1})}{(1-Ae^{i\theta}z^{-1})(1-Ae^{-i\theta}z^{-1})} \\
+       & = & \frac{a_0 (1-Az^{-2})}{1-Ae^{i\theta}z^{-1} - Ae^{-i\theta}z^{-1} + A^2 e^{i\theta-i\theta}z^{-2}} \quad = \quad \frac{a_0 (1-Az^{-2})}{1-A(e^{i\theta}+e^{-i\theta})z^{-1}+A^2 z^{-2}}
+\quad = \\
+       & = & \frac{Y(z)}{X(z)}
+\end{array}
+\]
+
+Então, temos:
+
+\[\displaystyle
+\begin{array}{l c l}
+  Y(z) & = & a_0 (1-Az^{-2}) \quad \Rightarrow \quad a_1 = 0, \quad a_2 = \frac{-A}{a_0} \\
+  X(z) & = & 1-A(e^{i\theta}+e^{-i\theta})z^{-1}+A^2 z^{-2} \quad \Rightarrow \quad b_1 = -A(e^{i\theta}+e^{-i\theta}), \quad b2 = A^2
+\end{array}
+\]
+
+E portanto, a equação do filtro fica:
+
+\begin{equation}\displaystyle
+  y(n) = a_0x(n) - \frac{A}{a_0}x(n-2) -A(e^{i\theta}+e^{-i\theta})y(n-1) + A^2y(n-2)
+\end{equation}
+
 
 %-----------------------------------------------------------------------------
 % 4.b
 \subsection{}
+
+Como a transformada Z mapeia frequências dentro da taxa de Nyquist no intervalo $[0, 2\pi[$, então $G(f) = |H(e^{\frac{if2\pi}{R}})|$, então:
+
+\[\displaystyle
+\begin{array}{l c l}
+  G(f) & = & |H(e^{\frac{i2f\pi}{R}})| = \left| \frac{a_0 (1-Ae^{\frac{-i4fpi}{R}})}{1-A(e^{i\theta}+e^{-i\theta})e^{\frac{-i2f\pi}{R}}+A^2 e^{\frac{-i4f\pi}{R}}}\right| 
+\end{array}
+\]
+
 
 
 %-----------------------------------------------------------------------------
