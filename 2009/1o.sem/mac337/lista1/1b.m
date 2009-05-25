@@ -22,7 +22,7 @@ t=zeros(1,4*R*T)+FO;
 
 % Adiciona multiplos inteiros da frequencia w
 for n=1:Nharmonicos
-  Fn=((1-exp(i*(pi-2*pi*n/3)))/(6*pi-4*n*pi))+((1-exp(-i*(pi+2*pi*n/3)))/(6*pi+4*n*pi))+(((-exp(-i*2*n*pi)-exp(-i*2*n*pi/3)))/(-i*2*n*pi))+((3*(exp(-i*2*n*pi)-exp(-i*2*n*pi/3)))/(4*n*n*pi*pi));
+  Fn=((1-exp(i*(pi-2*pi*n/3)))/(6*pi-4*n*pi))+((1-exp(-i*(pi+2*pi*n/3)))/(6*pi+4*n*pi))+(((-exp(-i*2*n*pi)-exp(-i*2*n*pi/3)))/(-i*2*n*pi))+((3*(-exp(-i*2*n*pi)+exp(-i*2*n*pi/3)))/(4*n*n*pi*pi));
   h=zeros(1,4*R*T);
   for j=1:4*R*T;
     h(j)=Fn*exp(i*n*w*(j/R))+(Fn')*exp(-i*n*w*(j/R));

@@ -130,7 +130,7 @@ E também que:
 
 \[\displaystyle
 \begin{array}{l c l}
-  \int\limits_1^3 \! (2-t) e^{-i \omega_n t}\, dt & = & 3 \left( \frac{-e^{-in2\pi}-e^{\frac{-in2\pi}{3})}}{-in2\pi} - 3 \frac{e^{-in2\pi}-e^{\frac{-in2\pi}{3})}}{4 n^2 \pi^2} \right)
+  \int\limits_1^3 \! (2-t) e^{-i \omega_n t}\, dt & = & 3 \left( \frac{-e^{-in2\pi}-e^{\frac{-in2\pi}{3})}}{-in2\pi} - 3 \frac{-e^{-in2\pi}+e^{\frac{-in2\pi}{3})}}{4 n^2 \pi^2} \right)
 \end{array}
 \]
 
@@ -139,8 +139,8 @@ Assim, o $n-$ésimo harmônico fica definido por:
 \[\displaystyle
 \begin{array}{l c l}
   h_n^g(t) & = & G_n e^{i \omega_n t} + G_{-n} e^{i \omega_{-n} t} \quad = \quad G_n e^{i \omega_n t} + G_n^* e^{-i \omega_{-n} t} \quad = \\
-         & = & \left[ \frac{1-e^{i(\pi-\frac{n2\pi}{3})}}{6\pi - n4\pi} + \frac{1-e^{-i(\pi+\frac{n2\pi}{3})}}{6\pi + n4\pi} + \frac{-e^{-in2\pi}-e^{\frac{-in2\pi}{3})}}{-in2\pi} - 3 \frac{e^{-in2\pi}-e^{\frac{-in2\pi}{3})}}{4 n^2 \pi^2} \right] e^{\frac{i n 2 \pi t}{3}} \quad + \\
-         & + & \left[ \frac{1-e^{-i(\pi-\frac{n2\pi}{3})}}{6\pi - n4\pi} + \frac{1-e^{i(\pi+\frac{n2\pi}{3})}}{6\pi + n4\pi} + \frac{-e^{in2\pi}-e^{\frac{in2\pi}{3})}}{-in2\pi} - 3 \frac{e^{in2\pi}-e^{\frac{in2\pi}{3})}}{4 n^2 \pi^2} \right] e^{\frac{-i n 2 \pi t}{3}}
+         & = & \left[ \frac{1-e^{i(\pi-\frac{n2\pi}{3})}}{6\pi - n4\pi} + \frac{1-e^{-i(\pi+\frac{n2\pi}{3})}}{6\pi + n4\pi} + \frac{-e^{-in2\pi}-e^{\frac{-in2\pi}{3})}}{-in2\pi} - 3 \frac{-e^{-in2\pi}+e^{\frac{-in2\pi}{3})}}{4 n^2 \pi^2} \right] e^{\frac{i n 2 \pi t}{3}} \quad + \\
+         & + & \left[ \frac{1-e^{-i(\pi-\frac{n2\pi}{3})}}{6\pi - n4\pi} + \frac{1-e^{i(\pi+\frac{n2\pi}{3})}}{6\pi + n4\pi} + \frac{-e^{in2\pi}-e^{\frac{in2\pi}{3})}}{-in2\pi} - 3 \frac{-e^{in2\pi}+e^{\frac{in2\pi}{3})}}{4 n^2 \pi^2} \right] e^{\frac{-i n 2 \pi t}{3}}
 \end{array}
 \]
 
@@ -151,7 +151,7 @@ E $g(t)$ pode ser escrita como uma soma infinita de todos os harmônicos:
   \label{eq:1b}
 \end{equation}
 
-O resultado do cálculo de $g(t)$ pela fórmula \eqref{eq:1b} com 100 harmônicos pode ser visto na figura \ref{fig:1b-gfs}. A princípio podemos desconfiar da inclinação da reta, mas é bom lembrar que foram computados somente 100 harmônicos, e que certamente infinitos harmônicos serão suficientes para conseguir dar a ela a inclinação correta.
+O resultado do cálculo de $g(t)$ pela fórmula \eqref{eq:1b} com 100 harmônicos pode ser visto na figura \ref{fig:1b-gfs}.
 
 \begin{figure}
   \fbox{\includegraphics[width=\textwidth]{grafico-1b-transformada.eps}}

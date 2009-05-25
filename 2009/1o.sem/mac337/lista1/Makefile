@@ -1,8 +1,12 @@
 TEXFILES = lista1.tex
 GRAPHICS = grafico-1a.eps grafico-1a-transformada.eps grafico-1b.eps grafico-1b-transformada.eps grafico-1c.eps grafico-1c-transformada.eps
 
-lista1.pdf: $(TEXFILES) $(GRAPHICS)
+lista1.dvi: $(TEXFILES) $(GRAPHICS)
 	latex -output-format=dvi $<
+	latex -output-format=dvi $<
+	latex -output-format=dvi $<
+
+lista1.pdf: lista1.dvi
 	dvipdf lista1.dvi
 	make partial-clean
 
