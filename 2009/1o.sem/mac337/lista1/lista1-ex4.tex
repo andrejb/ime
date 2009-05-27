@@ -6,28 +6,30 @@
 % 4.a
 \subsection{}
 
+Podemos escrever a função de transferência $H(z)$ associada ao filtro $y(n)$ como quociente de produtos que envolvem os valores dos zeros e dos pólos do filtro:
+
 \[\displaystyle
 \begin{array}{l c l}
-  H(z) & = & \frac{a_0 (1 - Z_1 z^{-1})(1 - Z_2 z^{-1} )}{(1 - P_1 z^{-1})(1 - P_2 z^{-1})} \quad = \quad \frac{a_0 (1+\sqrt{A}z^{-1})(1-\sqrt{A}z^{-1})}{(1-Ae^{i\theta}z^{-1})(1-Ae^{-i\theta}z^{-1})} \\
-       & = & \frac{a_0 (1-Az^{-2})}{1-Ae^{i\theta}z^{-1} - Ae^{-i\theta}z^{-1} + A^2 e^{i\theta-i\theta}z^{-2}} \quad = \quad \frac{a_0 (1-Az^{-2})}{1-A(e^{i\theta}+e^{-i\theta})z^{-1}+A^2 z^{-2}}
-\quad = \\
-       & = & \frac{Y(z)}{X(z)}
+  H(z) & = & a_0 \frac{\prod\limits_{i=1}^M(1-Z_i z^{-1})}{\prod\limits_{i=1}^N (1-P_i z^{-1})} \quad = \quad \frac{a_0 (1 - Z_1 z^{-1})(1 - Z_2 z^{-1} )}{(1 - P_1 z^{-1})(1 - P_2 z^{-1})} \quad = \\
+       & = & \frac{a_0 (1+\sqrt{A}z^{-1})(1-\sqrt{A}z^{-1})}{(1-Ae^{i\theta}z^{-1})(1-Ae^{-i\theta}z^{-1})} \quad = \quad \frac{a_0 (1-Az^{-2})}{1-Ae^{i\theta}z^{-1} - Ae^{-i\theta}z^{-1} + A^2 e^{i\theta-i\theta}z^{-2}} \quad = \\
+       & = & \frac{a_0 (1-Az^{-2})}{1-A(e^{i\theta}+e^{-i\theta})z^{-1}+A^2 z^{-2}} \quad = \frac{a_0 (1-Az^{-2})}{1-2Acos(\theta)z^{-1}+A^2 z^{-2}} \quad = \\
+       & = & \frac{ \sum\limits_{k=0}^M a_k z^{-k}}{ 1 + \sum\limits_{k=1}^N b_k z^{-k} } \quad = \quad \frac{N(z)}{D(z)}
 \end{array}
 \]
 
-Então, temos:
+Na relação acima, os coeficientes de $N(z)$ e $D(z)$ são, respectivamente, os coeficientes $a_i$ e $b_i$ do filtro $y(n)$. Se supusermos $a_0=1$, por conveniência nos cálculos, teremos:
 
 \[\displaystyle
-\begin{array}{l c l}
-  Y(z) & = & a_0 (1-Az^{-2}) \quad \Rightarrow \quad a_1 = 0, \quad a_2 = \frac{-A}{a_0} \\
-  X(z) & = & 1-A(e^{i\theta}+e^{-i\theta})z^{-1}+A^2 z^{-2} \quad \Rightarrow \quad b_1 = -A(e^{i\theta}+e^{-i\theta}), \quad b2 = A^2
+\begin{array}{l c l c l}
+  N(z) & = & 1-Az^{-2} & \Rightarrow & a_1 = 0, \quad a_2 = -A \\
+  D(z) & = & 1-2Acos(\theta)z^{-1}+A^2 z^{-2} & \Rightarrow & b_1 = -2Acos(\theta), \quad b2 = A^2
 \end{array}
 \]
 
 E portanto, a equação do filtro fica:
 
 \begin{equation}\displaystyle
-  y(n) = a_0x(n) - \frac{A}{a_0}x(n-2) -A(e^{i\theta}+e^{-i\theta})y(n-1) + A^2y(n-2)
+  y(n) = x(n) - Ax(n-2) -2Acos(\theta)y(n-1) + A^2y(n-2)
 \end{equation}
 
 
@@ -35,11 +37,27 @@ E portanto, a equação do filtro fica:
 % 4.b
 \subsection{}
 
-Como a transformada Z mapeia frequências dentro da taxa de Nyquist no intervalo $[0, 2\pi[$, então $G(f) = |H(e^{\frac{if2\pi}{R}})|$, então:
+Para encontrar o ganho de um filtro em uma certa frequência $\omega$, basta
+calcular a magnitude da equação de transferência do filtro nesta frequência, ou
+seja, medir $H(e^{i\omega})$. Ao substituir $z$ na equação por $e^{i\omega}$,
+teremos termos da forma $e^{-i\omega k}$, onde $\omega$ representará uma
+frequência em radianos/amostra.
+
+Dada uma frequência $f$ em Hertz (ciclos/segundo) e um valor $R$ da taxa de
+amostragem da entrada em amostras/segundo, podemos representá-la como $2 \pi f$
+radianos/segundo, ou $\frac{2 \pi f}{R}$ radianos/amostra. Dessa forma, uma
+frequência $f$ dentro da taxa de Nyquist será mapeada em uma frequência $\omega
+= \frac{2 \pi f}{R}$ entre $-\pi$ e $\pi$. Então, supondo que o sinal de
+entrada tenha passado por um filtro passa-baixo e que portanto não possui
+frequências maiores que a taxa de Nyquist, definimos
+$G(f):[\frac{-R}{2},\frac{R}{2}] \rightarrow \mathbb{R}^{\ge 0}$ com $G(f) =
+|H(e^{\frac{i 2 \pi f}{R}})|$. Daí, temos:
 
 \[\displaystyle
 \begin{array}{l c l}
-  G(f) & = & |H(e^{\frac{i2f\pi}{R}})| = \left| \frac{a_0 (1-Ae^{\frac{-i4fpi}{R}})}{1-A(e^{i\theta}+e^{-i\theta})e^{\frac{-i2f\pi}{R}}+A^2 e^{\frac{-i4f\pi}{R}}}\right| 
+  G(f) & = & |H(e^{i\omega})| \quad = \quad \sqrt{H(e^{i\omega})H(e^{-i\omega})} \quad = \\
+       & = & \sqrt{ \frac{1-Ae^{-i2\omega}}{1-2Acos(\theta)e^{-i\omega}+A^2 e^{-i2\omega}} \frac{1-Ae^{i2\omega}}{1-2Acos(\theta)e^{i\omega}+A^2 e^{i\omega}}} \quad = \\
+       & = & \sqrt{\frac{1-A(e^{-2i\omega}+e^{i2\omega})+A^2e^{-i2\omega+i2\omega}}{}} \quad = \sqrt{\frac{1-2Acos(2\omega)+A^2}{}}\\
 \end{array}
 \]
 
