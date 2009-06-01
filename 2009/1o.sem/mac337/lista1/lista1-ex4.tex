@@ -55,11 +55,37 @@ $G(f):[\frac{-R}{2},\frac{R}{2}] \rightarrow \mathbb{R}^{\ge 0}$ com $G(f) =
 
 \[\displaystyle
 \begin{array}{l c l}
-  G(f) & = & |H(e^{i\omega})| \quad = \quad \sqrt{H(e^{i\omega})H(e^{-i\omega})} \quad = \\
-       & = & \sqrt{ \frac{1-Ae^{-i2\omega}}{1-2Acos(\theta)e^{-i\omega}+A^2 e^{-i2\omega}} \frac{1-Ae^{i2\omega}}{1-2Acos(\theta)e^{i\omega}+A^2 e^{i\omega}}} \quad = \\
-       & = & \sqrt{\frac{1-A(e^{-2i\omega}+e^{i2\omega})+A^2e^{-i2\omega+i2\omega}}{}} \quad = \sqrt{\frac{1-2Acos(2\omega)+A^2}{}}\\
+  G(f) & = &\displaystyle |H(e^{i\omega})| \quad = \quad \left| \frac{(1+\sqrt{A}e^{-i\omega})(1-\sqrt{A}e^{-i\omega})}{(1-Ae^{i\theta}e^{-i\omega})(1-Ae^{-i\theta}e^{-i\omega})} \right| \quad = \\
+       & = &\displaystyle \quad \frac{\left|(1+\sqrt{A}e^{-i\omega})\right|\left|(1-\sqrt{A}e^{-i\omega})\right|}{\displaystyle\left|(1-Ae^{i\theta}e^{-i\omega})\right|\left|(1-Ae^{-i\theta}e^{-i\omega})\right|} \quad = \quad \frac{\left| H_1(e^{i\omega})\right| \left| H_2(e^{i\omega})\right|}{\displaystyle\left| H_3(e^{i\omega})\right|\left| H_4(e^{i\omega})\right|}
 \end{array}
 \]
+
+Podemos calcular cada termo separadamente:
+
+\[
+\begin{array}{l c l}
+  |H_1(e^{i\omega})| & = &\displaystyle \left|(1+\sqrt{A}cos(\omega) -i\sqrt{A}sen(\omega))\right| \quad = \\
+                     & = & \sqrt{(1+\sqrt{A}cos(\omega))^2+(-\sqrt{A}sen(\omega))^2} \quad = \\
+                     & = &\displaystyle \sqrt{1+2\sqrt{A}cos(\omega) + A} \\
+  |H_2(e^{i\omega})| & = & \displaystyle \left|(1-\sqrt{A}cos(\omega) +i\sqrt{A}sen(\omega))\right| \quad = \\
+                     & = & \sqrt{(1-\sqrt{A}cos(\omega))^2+(\sqrt{A}sen(\omega))^2} \quad = \\
+                     & = &\displaystyle \sqrt{1-2\sqrt{A}cos(\omega) + A} \\
+  |H_3(e^{i\omega})| & = &\displaystyle \left|(1-Acos(\theta-\omega)+iAsen(\theta-\omega))\right| \quad = \\
+                     & = &\displaystyle \sqrt{(1-Acos(\theta-\omega))^2+(Asen(\omega-\theta))^2} \\
+                     & = &\displaystyle \sqrt{1-2Acos(\theta-\omega)+A^2} \\
+  |H_4(e^{i\omega})| & = &\displaystyle \left|(1-Acos(\theta+\omega)+iAsen(\theta+\omega))\right| \quad = \\
+                     & = &\displaystyle \sqrt{(1-Acos(\theta+\omega))^2+(Asen(\omega+\theta))^2} \\
+                     & = &\displaystyle \sqrt{1-2Acos(\theta+\omega)+A^2}
+\end{array}
+\]
+
+E finalmente substituir $\omega = \frac{2 \pi f}{R}$, para obter a expressão final:
+
+\begin{equation}
+\begin{array}{l c l c l}
+  G(f) = \left| H(e^{i\frac{2 \pi f}{R}}) \right| = \frac{\sqrt{1+2\sqrt{A}cos(\frac{2 \pi f}{R}) + A} \sqrt{1-2\sqrt{A}cos(\frac{2 \pi f}{R}) + A}}{\sqrt{1-2Acos(\theta-\frac{2 \pi f}{R})+A^2}\sqrt{1-2Acos(\theta+\frac{2 \pi f}{R})+A^2}}
+\end{array}
+\end{equation}
 
 
 
@@ -67,7 +93,83 @@ $G(f):[\frac{-R}{2},\frac{R}{2}] \rightarrow \mathbb{R}^{\ge 0}$ com $G(f) =
 % 4.c
 \subsection{}
 
+\[
+\begin{array}{l c l c l}
+  G(\frac{R\theta}{2\pi}) & = & \left| H(e^{i\theta}) \right| \quad = \quad \frac{\sqrt{1+2\sqrt{A}cos(\theta) + A} \sqrt{1-2\sqrt{A}cos(\theta) + A}}{\sqrt{1-2Acos(\theta-\theta)+A^2}\sqrt{1-2Acos(\theta+\theta)+A^2}} \quad & \\
+  & = & \frac{\sqrt{1+2\sqrt{A}cos(\theta)+A-2\sqrt{A}cos(\theta)-4Acos^2(\theta)-2\sqrt{A}Acos(\theta)+A+2A\sqrt{A}cos(\theta)+A^2}}{\sqrt{1-2A+A^2}\sqrt{1-2A(cos^2(\theta)-sen^2(\theta)+A^2)}} \quad = \\
+  & = & \frac{\sqrt{1-4Acos^2(\theta)+2A+A^2}}{\sqrt{(1-A)^2} \sqrt{1-4Acos^2(\theta)+2A+A^2)}} = \frac{1}{1-A}
+\end{array}
+\]
+
+\[
+\begin{array}{l c l c l}
+  G(0) & = & \left| H(e^{i0}) \right| \quad = \quad \frac{\sqrt{1+2\sqrt{A}cos(0) + A} \sqrt{1-2\sqrt{A}cos(0) + A}}{\sqrt{1-2Acos(\theta-0)+A^2}\sqrt{1-2Acos(\theta+0)+A^2}} \quad & \\
+       & = & \frac{\sqrt{1+2\sqrt{A} + A} \sqrt{1-2\sqrt{A} + A}}{\sqrt{1-2Acos(\theta)+A^2}\sqrt{1-2Acos(\theta)+A^2}} \quad & \\
+       & = & \frac{\sqrt{1-2A+A^2}}{1-2Acos(\theta)+A^2} \quad = \quad \frac{(1-A)}{1-2Acos(\theta)+A^2} \\
+\end{array}
+\]
+
+\[
+\begin{array}{l c l c l}
+  G(\frac{R}{2}) & = & \left| H(e^{i\pi}) \right| \quad = \quad \frac{\sqrt{1+2\sqrt{A}cos(\pi) + A} \sqrt{1-2\sqrt{A}cos(\pi) + A}}{\sqrt{1-2Acos(\theta-\pi)+A^2}\sqrt{1-2Acos(\theta+\pi)+A^2}} \quad & \\
+         & = & \frac{\sqrt{1-2\sqrt{A}+A} \sqrt{1+2\sqrt{A}+A}}{\sqrt{1-2Acos(\theta-\pi)+A^2}\sqrt{1-2Acos(\theta+\pi)+A^2}} \quad = \\
+         & = & \frac{1-A}{1-2Acos(\theta+\pi)+A^2} \\
+\end{array}
+\]
+
+Se $\theta = \frac{\pi}{2}$:
+
+\[
+\begin{array}{l c l c l}
+  G(0) & = & \frac{(1-A)}{1-2Acos(\frac{\pi}{2})+A^2} \quad = \quad \frac{1-A}{1+A^2} \\
+\end{array}
+\]
+
+\[
+\begin{array}{l c l c l}
+  G(\frac{R}{2}) & = & \frac{1-A}{1-2Acos(\frac{3\pi}{2})+A^2} \quad  = \quad \frac{1-A}{1+A^2} \\
+\end{array}
+\]
+
+O gráfico de $G(f)$ com $\theta = \frac{\pi}{2}$ pode ser visto na figura \ref{fig:4c}. Podemos notar a influência simétrica em $f = \frac{44100}{2} = 22050$Hz.
+
+\begin{figure}
+  \fbox{\includegraphics[width=\textwidth]{grafico-4d-0.eps}}
+  \caption{\small{$G(f)$ com $\theta = \frac{\pi}{2}$, $A = 0,8$ e $R = 44100$Hz.}}
+  \label{fig:4c}
+\end{figure}
 
 %-----------------------------------------------------------------------------
 % 4.d
 \subsection{}
+
+Os gráficos de $G(f)$ no intervalo $[\frac{-R}{2},\frac{R}{2}]$ com $\theta = \frac{\pi}{4}$ e $\theta = \frac{3\pi}{4}$podem ser vistos nas figuras \ref{fig:4d-1} e \ref{fig:4d-2}, respectivamente. Podemos notar em cada figura como a proximidade dos pólos dos pontos do círculo unitário com ângulo $\frac{\pm\pi}{4}$ e $\frac{\pm3\pi}{4}$ influenciam as frequências próximas de $\frac{R}{8} = 5012,5$ e $\frac{3R}{8} = 1537,5$. 
+
+\begin{figure}
+  \fbox{\includegraphics[width=\textwidth]{grafico-4d-1.eps}}
+  \caption{\small{$G(f)$ com $\theta = \frac{\pi}{4}$, $A = 0,8$ e $R = 44100$Hz.}}
+  \label{fig:4d-1}
+\end{figure}
+
+\begin{figure}
+  \fbox{\includegraphics[width=\textwidth]{grafico-4d-2.eps}}
+  \caption{\small{$G(f)$ com $\theta = \frac{3\pi}{4}$, $A = 0,8$ e $R = 44100$Hz.}}
+  \label{fig:4d-2}
+\end{figure}
+
+Finalmente, se normalizamos a função de transferência por um fator de $(1-A)$, teremos:
+
+\[\displaystyle
+\begin{array}{l c l c l}
+  H(z) & = & \frac{(1-A) (1-Az^{-2})}{1-2Acos(\theta)z^{-1}+A^2 z^{-2}}  & = & \frac{1 - Az^{-2}-A+A^2z^{-2}}{1-2Acos(\theta)z^{-1}+A^2 z^{-2}} \quad = \\
+       & = & \frac{(1-A) + (A^2 - A)z^{-2}}{1-2Acos(\theta)z^{-1}+A^2 z^{-2}}  &\Rightarrow & a_0 = (1-A), \quad a_2 = (A^2 - A) \\
+       & & & & b_1 = -2Acos(\theta), \quad b_2 = A^2
+\end{array}
+\]
+
+E o filtro normalizado, será dado por:
+
+\begin{equation}\displaystyle
+  y(n) = (1-A)x(n) - (A^2 - A)x(n-2) -2Acos(\theta)y(n-1) + A^2y(n-2)
+\end{equation}
+

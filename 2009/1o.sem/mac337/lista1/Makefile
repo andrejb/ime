@@ -1,5 +1,6 @@
 TEXFILES = lista1.tex lista1-ex1.tex lista1-ex2.tex lista1-ex3.tex lista1-ex4.tex
-FUNCTION_GRAPHICS = grafico-1a.eps grafico-1b.eps grafico-1c.eps
+FUNCTION_GRAPHICS = grafico-1a.eps grafico-1b.eps grafico-1c.eps \
+                    grafico-4d-0.eps grafico-4d-1.eps grafico-4d-2.eps
 TRANSFORM_GRAPHICS =  grafico-1a-transformada.eps grafico-1b-transformada.eps grafico-1c-transformada.eps
 
 lista1.pdf: lista1.dvi

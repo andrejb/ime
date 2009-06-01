@@ -30,6 +30,6 @@ for n=1:Nharmonicos
   end;
 end;
 %plot(0:1/R:4*T-1/R,t);drawnow
-a=t'
-save 1a-sintese.data a
+a=t';
+save 1a-sintese.data a;
 

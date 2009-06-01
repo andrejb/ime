@@ -49,5 +49,5 @@ end;
 %end;
 
 %plot(0:1/R:4*T-1/R,h);drawnow
-a=real(t)'
-save 1c-sintese.data a
+a=real(t)';
+save 1c-sintese.data a;
